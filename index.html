@@ -1,0 +1,3367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A R Fashion | Premium Women's Fashion</title>
+<meta name="description" content="A R Fashion - Discover premium women's fashion, new arrivals and featured collections.">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+:root{
+    --black:#111111;
+    --white:#ffffff;
+    --pink:#ff4f91;
+    --light-pink:#fff1f6;
+    --gray:#777;
+    --border:#eeeeee;
+}
+
+body{
+    background:#fff;
+    color:var(--black);
+}
+
+button{
+    font-family:inherit;
+    cursor:pointer;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* HEADER */
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(255,255,255,.96);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid #eee;
+}
+
+.navbar{
+    height:72px;
+    max-width:1200px;
+    margin:auto;
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.logo-mark{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#111;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:Georgia,serif;
+    font-size:17px;
+    font-weight:bold;
+    border:2px solid var(--pink);
+}
+
+.logo-text{
+    font-family:Georgia,serif;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.logo-text span{
+    color:var(--pink);
+}
+
+.nav-links{
+    display:flex;
+    gap:28px;
+    align-items:center;
+}
+
+.nav-links a{
+    font-size:14px;
+    font-weight:600;
+}
+
+.nav-links a:hover{
+    color:var(--pink);
+}
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.icon-btn{
+    width:40px;
+    height:40px;
+    border:1px solid #eee;
+    border-radius:50%;
+    background:#fff;
+    font-size:17px;
+}
+
+.icon-btn:hover{
+    background:var(--light-pink);
+}
+
+.cart-btn{
+    position:relative;
+}
+
+.cart-count{
+    position:absolute;
+    top:-3px;
+    right:-3px;
+    width:18px;
+    height:18px;
+    background:var(--pink);
+    color:#fff;
+    border-radius:50%;
+    font-size:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.menu-btn{
+    display:none;
+}
+
+/* ACCOUNT BUTTON */
+.account-btn{
+    width:auto;
+    min-width:40px;
+    padding:0 13px;
+    border-radius:22px;
+    font-size:13px;
+    font-weight:bold;
+    color:#111;
+}
+
+.account-btn.logged{
+    background:#111;
+    color:#fff;
+    border-color:#111;
+}
+
+
+/* HERO */
+.hero{
+    min-height:540px;
+    background:
+        radial-gradient(circle at 85% 25%,rgba(255,79,145,.22),transparent 28%),
+        linear-gradient(135deg,#111 0%,#181818 55%,#292929 100%);
+    color:#fff;
+    display:flex;
+    align-items:center;
+}
+
+.hero-inner{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+    padding:70px 20px;
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:30px;
+    align-items:center;
+}
+
+.hero-small{
+    color:#ff75a8;
+    font-size:13px;
+    font-weight:bold;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+}
+
+.hero h1{
+    font-family:Georgia,serif;
+    font-size:clamp(44px,6vw,76px);
+    line-height:1;
+    margin-bottom:22px;
+}
+
+.hero h1 span{
+    color:#ff5c99;
+}
+
+.hero p{
+    max-width:530px;
+    color:#ddd;
+    font-size:16px;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    padding:14px 23px;
+    border-radius:30px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.btn-pink{
+    background:var(--pink);
+    color:#fff;
+}
+
+.btn-white{
+    background:#fff;
+    color:#111;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.hero-art{
+    min-height:360px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.fashion-card{
+    width:min(350px,90%);
+    height:400px;
+    border-radius:180px 180px 20px 20px;
+    background:
+        linear-gradient(145deg,#fff,#f5f5f5);
+    position:relative;
+    box-shadow:0 25px 70px rgba(0,0,0,.4);
+    overflow:hidden;
+}
+
+.fashion-card::before{
+    content:"AR";
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:Georgia,serif;
+    font-size:110px;
+    font-weight:bold;
+    color:rgba(255,79,145,.12);
+}
+
+.fashion-card::after{
+    content:"WOMEN'S COLLECTION";
+    position:absolute;
+    bottom:30px;
+    left:0;
+    right:0;
+    text-align:center;
+    font-size:12px;
+    letter-spacing:4px;
+    color:#555;
+}
+
+/* SECTION */
+section{
+    padding:70px 18px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.section-head{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.section-label{
+    color:var(--pink);
+    font-size:12px;
+    letter-spacing:3px;
+    font-weight:bold;
+    text-transform:uppercase;
+    margin-bottom:9px;
+}
+
+.section-title{
+    font-family:Georgia,serif;
+    font-size:36px;
+}
+
+.section-text{
+    color:#777;
+    margin-top:10px;
+}
+
+/* CATEGORY */
+.category-row{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:8px;
+    margin-bottom:35px;
+    scrollbar-width:none;
+}
+
+.category-row::-webkit-scrollbar{
+    display:none;
+}
+
+.category{
+    flex:0 0 auto;
+    border:1px solid #ddd;
+    background:#fff;
+    padding:10px 19px;
+    border-radius:25px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.category.active,
+.category:hover{
+    background:#111;
+    color:#fff;
+    border-color:#111;
+}
+
+/* SEARCH */
+.search-box{
+    max-width:600px;
+    margin:0 auto 25px;
+    position:relative;
+}
+
+.search-box input{
+    width:100%;
+    height:52px;
+    border:1px solid #ddd;
+    border-radius:30px;
+    padding:0 50px 0 20px;
+    outline:none;
+    font-size:14px;
+}
+
+.search-box input:focus{
+    border-color:var(--pink);
+}
+
+.search-icon{
+    position:absolute;
+    right:18px;
+    top:15px;
+}
+
+/* PRODUCTS */
+.products-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.product{
+    border:1px solid #eee;
+    border-radius:16px;
+    overflow:hidden;
+    background:#fff;
+    transition:.25s;
+}
+
+.product:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+.product-image{
+    height:280px;
+    background:#f6f6f6;
+    position:relative;
+    overflow:hidden;
+}
+
+.product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.product-placeholder{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#bbb;
+    font-family:Georgia,serif;
+    font-size:38px;
+}
+
+.badge{
+    position:absolute;
+    top:12px;
+    left:12px;
+    background:var(--pink);
+    color:#fff;
+    padding:6px 10px;
+    border-radius:15px;
+    font-size:10px;
+    font-weight:bold;
+}
+
+.product-info{
+    padding:15px;
+}
+
+.product-category{
+    color:#999;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+.product-name{
+    font-size:15px;
+    font-weight:bold;
+    margin:7px 0;
+}
+
+.product-price{
+    font-weight:bold;
+    color:var(--pink);
+    font-size:16px;
+}
+
+.product-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:12px;
+}
+
+.add-btn{
+    border:none;
+    background:#111;
+    color:#fff;
+    padding:9px 13px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.add-btn:hover{
+    background:var(--pink);
+}
+
+.empty{
+    grid-column:1/-1;
+    text-align:center;
+    padding:60px 20px;
+    color:#888;
+}
+
+/* FEATURE */
+.feature-section{
+    background:#fafafa;
+}
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.feature{
+    background:#fff;
+    border:1px solid #eee;
+    border-radius:18px;
+    padding:30px 22px;
+    text-align:center;
+}
+
+.feature-icon{
+    width:55px;
+    height:55px;
+    margin:0 auto 15px;
+    border-radius:50%;
+    background:var(--light-pink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.feature h3{
+    margin-bottom:8px;
+}
+
+.feature p{
+    color:#777;
+    line-height:1.6;
+    font-size:13px;
+}
+
+/* CART */
+.cart-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:2000;
+    display:none;
+}
+
+.cart-overlay.show{
+    display:block;
+}
+
+.cart{
+    position:absolute;
+    right:0;
+    top:0;
+    height:100%;
+    width:min(420px,94%);
+    background:#fff;
+    padding:22px;
+    overflow-y:auto;
+}
+
+.cart-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close-btn{
+    border:none;
+    background:#f5f5f5;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+}
+
+.cart-item{
+    display:flex;
+    gap:12px;
+    padding:13px 0;
+    border-bottom:1px solid #eee;
+}
+
+.cart-img{
+    width:65px;
+    height:75px;
+    background:#f4f4f4;
+    border-radius:8px;
+    overflow:hidden;
+}
+
+.cart-img img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.cart-details{
+    flex:1;
+}
+
+.cart-details h4{
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.cart-details p{
+    font-size:12px;
+    color:#777;
+}
+
+.qty{
+    display:flex;
+    gap:7px;
+    align-items:center;
+    margin-top:8px;
+}
+
+.qty button{
+    border:1px solid #ddd;
+    background:#fff;
+    width:25px;
+    height:25px;
+    border-radius:5px;
+}
+
+.cart-total{
+    padding:20px 0;
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.whatsapp-order{
+    width:100%;
+    border:none;
+    background:#25D366;
+    color:#fff;
+    padding:15px;
+    border-radius:30px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+/* LOGIN MODAL */
+.auth-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(5px);
+    z-index:5000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+}
+
+.auth-overlay.show{
+    display:flex;
+}
+
+.auth-box{
+    width:min(420px,100%);
+    background:#fff;
+    border-radius:22px;
+    padding:28px 22px;
+    box-shadow:0 25px 70px rgba(0,0,0,.3);
+    position:relative;
+    animation:authIn .2s ease;
+}
+
+@keyframes authIn{
+    from{
+        opacity:0;
+        transform:translateY(15px) scale(.98);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+.auth-close{
+    position:absolute;
+    top:15px;
+    right:15px;
+    border:none;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#f5f5f5;
+    font-size:16px;
+}
+
+.auth-logo{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:#111;
+    color:#fff;
+    border:2px solid var(--pink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:Georgia,serif;
+    font-weight:bold;
+    margin:0 auto 15px;
+}
+
+.auth-title{
+    text-align:center;
+    font-family:Georgia,serif;
+    font-size:29px;
+    margin-bottom:7px;
+}
+
+.auth-subtitle{
+    text-align:center;
+    color:#777;
+    font-size:13px;
+    margin-bottom:23px;
+    line-height:1.5;
+}
+
+.auth-tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    background:#f6f6f6;
+    padding:4px;
+    border-radius:30px;
+    margin-bottom:20px;
+}
+
+.auth-tab{
+    border:none;
+    background:transparent;
+    padding:11px;
+    border-radius:25px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.auth-tab.active{
+    background:#111;
+    color:#fff;
+}
+
+.auth-form{
+    display:none;
+}
+
+.auth-form.active{
+    display:block;
+}
+
+.auth-field{
+    margin-bottom:14px;
+}
+
+.auth-field label{
+    display:block;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.auth-field input{
+    width:100%;
+    height:48px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:0 14px;
+    outline:none;
+    font-size:14px;
+}
+
+.auth-field input:focus{
+    border-color:var(--pink);
+}
+
+.auth-submit{
+    width:100%;
+    border:none;
+    background:var(--pink);
+    color:#fff;
+    height:48px;
+    border-radius:25px;
+    font-weight:bold;
+    font-size:14px;
+    margin-top:5px;
+}
+
+.auth-submit:hover{
+    background:#111;
+}
+
+.auth-message{
+    min-height:18px;
+    text-align:center;
+    font-size:12px;
+    margin:12px 0 0;
+    color:#777;
+}
+
+.auth-message.error{
+    color:#d92727;
+}
+
+.auth-message.success{
+    color:#159447;
+}
+
+.account-panel{
+    display:none;
+    text-align:center;
+}
+
+.account-panel.show{
+    display:block;
+}
+
+.account-email{
+    background:#f8f8f8;
+    border-radius:12px;
+    padding:13px;
+    margin:15px 0;
+    font-size:13px;
+    word-break:break-word;
+}
+
+.logout-btn{
+    width:100%;
+    height:46px;
+    border:1px solid #111;
+    background:#111;
+    color:#fff;
+    border-radius:25px;
+    font-weight:bold;
+}
+
+.logout-btn:hover{
+    background:var(--pink);
+    border-color:var(--pink);
+}
+
+.forgot-link{
+    display:block;
+    text-align:right;
+    margin-top:8px;
+    color:var(--pink);
+    font-size:11px;
+    cursor:pointer;
+}
+
+
+/* FOOTER */
+footer{
+    background:#111;
+    color:#fff;
+    padding:55px 18px 25px;
+}
+
+.footer-grid{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:40px;
+}
+
+.footer-brand{
+    font-family:Georgia,serif;
+    font-size:28px;
+    margin-bottom:12px;
+}
+
+.footer-brand span{
+    color:var(--pink);
+}
+
+footer p{
+    color:#aaa;
+    font-size:13px;
+    line-height:1.7;
+}
+
+.footer-title{
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.footer-links{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    color:#aaa;
+    font-size:13px;
+}
+
+.socials{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.social{
+    width:38px;
+    height:38px;
+    border:1px solid #333;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.copyright{
+    max-width:1200px;
+    margin:35px auto 0;
+    padding-top:20px;
+    border-top:1px solid #292929;
+    text-align:center;
+    font-size:11px;
+    color:#666;
+}
+
+
+/* MOBILE */
+@media(max-width:850px){
+
+    .nav-links{
+        display:none;
+        position:absolute;
+        top:72px;
+        left:0;
+        right:0;
+        background:#fff;
+        padding:20px;
+        flex-direction:column;
+        border-bottom:1px solid #eee;
+    }
+
+    .nav-links.show{
+        display:flex;
+    }
+
+    .menu-btn{
+        display:block;
+    }
+
+    .hero-inner{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .hero p{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+    .hero-buttons{
+        justify-content:center;
+    }
+
+    .hero-art{
+        min-height:300px;
+    }
+
+    .fashion-card{
+        height:310px;
+        width:250px;
+    }
+
+    .products-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+    }
+
+    .product-image{
+        height:220px;
+    }
+
+    .feature-grid{
+        grid-template-columns:1fr;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:430px){
+
+    .logo-text{
+        font-size:19px;
+    }
+
+    .logo-mark{
+        width:40px;
+        height:40px;
+    }
+
+    .navbar{
+        padding:0 12px;
+    }
+
+    .header-actions{
+        gap:5px;
+    }
+
+    .icon-btn{
+        width:36px;
+        height:36px;
+    }
+
+    .account-btn{
+        min-width:36px;
+        padding:0 10px;
+        font-size:11px;
+    }
+
+    .hero{
+        min-height:auto;
+    }
+
+    .hero-inner{
+        padding:60px 17px;
+    }
+
+    .hero h1{
+        font-size:46px;
+    }
+
+    section{
+        padding:55px 13px;
+    }
+
+    .section-title{
+        font-size:30px;
+    }
+
+    .product-image{
+        height:200px;
+    }
+
+    .product-info{
+        padding:12px;
+    }
+
+    .product-name{
+        font-size:13px;
+    }
+
+    .product-price{
+        font-size:14px;
+    }
+
+    .auth-box{
+        padding:25px 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="navbar">
+
+        <a href="#" class="logo">
+            <div class="logo-mark">AR</div>
+
+            <div class="logo-text">
+                A R <span>Fashion</span>
+            </div>
+        </a>
+
+        <nav class="nav-links" id="navLinks">
+            <a href="#home" onclick="closeMenu()">Home</a>
+            <a href="#shop" onclick="closeMenu()">Shop</a>
+            <a href="#new" onclick="closeMenu()">New Arrivals</a>
+            <a href="#featured" onclick="closeMenu()">Featured</a>
+            <a href="#contact" onclick="closeMenu()">Contact</a>
+        </nav>
+
+        <div class="header-actions">
+
+            <!-- ACCOUNT -->
+            <button
+                class="icon-btn account-btn"
+                id="accountButton"
+                onclick="openAccount()"
+            >
+                👤
+            </button>
+
+            <!-- CART -->
+            <button class="icon-btn cart-btn" onclick="openCart()">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+
+            <button
+                class="icon-btn menu-btn"
+                onclick="toggleMenu()"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="hero-inner">
+
+        <div>
+            <div class="hero-small">A R Fashion</div>
+
+            <h1>
+                Style<br>
+                Made <span>Beautiful.</span>
+            </h1>
+
+            <p>
+                Discover elegant women's fashion, carefully selected
+                collections and beautiful styles made for every moment.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#shop" class="btn btn-pink">
+                    Shop Collection →
+                </a>
+
+                <a href="#new" class="btn btn-white">
+                    New Arrivals
+                </a>
+
+            </div>
+        </div>
+
+        <div class="hero-art">
+            <div class="fashion-card"></div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- SHOP -->
+<section id="shop">
+    <div class="container">
+
+        <div class="section-head">
+            <div class="section-label">Our Collection</div>
+
+            <h2 class="section-title">
+                Shop Women's Fashion
+            </h2>
+
+            <p class="section-text">
+                Find your next favourite style.
+            </p>
+        </div>
+
+        <div class="search-box">
+
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search products..."
+                oninput="renderProducts()"
+            >
+
+            <span class="search-icon">🔎</span>
+
+        </div>
+
+        <div class="category-row" id="categories">
+
+            <button
+                class="category active"
+                onclick="setCategory('All',this)"
+            >
+                All
+            </button>
+
+            <button
+                class="category"
+                onclick="setCategory('Women',this)"
+            >
+                Women
+            </button>
+
+            <button
+                class="category"
+                onclick="setCategory('Dresses',this)"
+            >
+                Dresses
+            </button>
+
+            <button
+                class="category"
+                onclick="setCategory('Tops',this)"
+            >
+                Tops
+            </button>
+
+            <button
+                class="category"
+                onclick="setCategory('Bottoms',this)"
+            >
+                Bottoms
+            </button>
+
+            <button
+                class="category"
+                onclick="setCategory('New Arrivals',this)"
+            >
+                New Arrivals
+            </button>
+
+            <button
+                class="category"
+                onclick="setCategory('Featured',this)"
+            >
+                Featured
+            </button>
+
+        </div>
+
+        <div
+            class="products-grid"
+            id="productsGrid"
+        >
+            <div class="empty">
+                Loading products...
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- NEW ARRIVALS -->
+<section id="new" class="feature-section">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="section-label">
+                Just In
+            </div>
+
+            <h2 class="section-title">
+                New Arrivals
+            </h2>
+
+            <p class="section-text">
+                Fresh styles added to A R Fashion.
+            </p>
+
+        </div>
+
+        <div
+            class="products-grid"
+            id="newProducts"
+        >
+            <div class="empty">
+                Loading...
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURED -->
+<section id="featured">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="section-label">
+                Our Picks
+            </div>
+
+            <h2 class="section-title">
+                Featured Collection
+            </h2>
+
+            <p class="section-text">
+                Styles selected specially for you.
+            </p>
+
+        </div>
+
+        <div
+            class="products-grid"
+            id="featuredProducts"
+        >
+            <div class="empty">
+                Loading...
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+<section class="feature-section">
+
+    <div class="container">
+
+        <div class="feature-grid">
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ✨
+                </div>
+
+                <h3>
+                    Premium Style
+                </h3>
+
+                <p>
+                    Carefully selected fashion pieces
+                    for your personal style.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    💬
+                </div>
+
+                <h3>
+                    Easy Ordering
+                </h3>
+
+                <p>
+                    Add your favourite items and order
+                    directly through WhatsApp.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    📦
+                </div>
+
+                <h3>
+                    Easy Shopping
+                </h3>
+
+                <p>
+                    Browse collections, check prices and
+                    choose your favourite pieces.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="section-label">
+                Get In Touch
+            </div>
+
+            <h2 class="section-title">
+                Contact A R Fashion
+            </h2>
+
+            <p class="section-text">
+                Have a question? Contact us through WhatsApp.
+            </p>
+
+            <br>
+
+            <a
+                href="https://wa.me/94767088968"
+                target="_blank"
+                class="btn btn-pink"
+            >
+                💬 WhatsApp Us
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- CART -->
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+    onclick="closeCartOutside(event)"
+>
+
+    <div
+        class="cart"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="cart-head">
+
+            <h2>
+                Your Cart
+            </h2>
+
+            <button
+                class="close-btn"
+                onclick="closeCart()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+        <div id="cartItems"></div>
+
+        <div class="cart-total">
+
+            <span>
+                Total
+            </span>
+
+            <span id="cartTotal">
+                Rs. 0.00
+            </span>
+
+        </div>
+
+        <button
+            class="whatsapp-order"
+            onclick="orderWhatsApp()"
+        >
+            💬 Order via WhatsApp
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- AUTH / ACCOUNT -->
+<div
+    class="auth-overlay"
+    id="authOverlay"
+    onclick="closeAuthOutside(event)"
+>
+
+    <div
+        class="auth-box"
+        onclick="event.stopPropagation()"
+    >
+
+        <button
+            class="auth-close"
+            onclick="closeAccount()"
+        >
+            ✕
+        </button>
+
+
+        <!-- LOGIN / SIGNUP AREA -->
+        <div id="authArea">
+
+            <div class="auth-logo">
+                AR
+            </div>
+
+            <h2
+                class="auth-title"
+                id="authTitle"
+            >
+                Welcome Back
+            </h2>
+
+            <p
+                class="auth-subtitle"
+                id="authSubtitle"
+            >
+                Login to your A R Fashion account.
+            </p>
+
+
+            <div class="auth-tabs">
+
+                <button
+                    class="auth-tab active"
+                    id="loginTab"
+                    onclick="showAuthForm('login')"
+                >
+                    Login
+                </button>
+
+                <button
+                    class="auth-tab"
+                    id="signupTab"
+                    onclick="showAuthForm('signup')"
+                >
+                    Sign Up
+                </button>
+
+            </div>
+
+
+            <!-- LOGIN -->
+            <form
+                class="auth-form active"
+                id="loginForm"
+                onsubmit="loginUser(event)"
+            >
+
+                <div class="auth-field">
+
+                    <label>
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="auth-field">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <span
+                        class="forgot-link"
+                        onclick="forgotPassword()"
+                    >
+                        Forgot password?
+                    </span>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                    id="loginSubmit"
+                >
+                    Login
+                </button>
+
+            </form>
+
+
+            <!-- SIGN UP -->
+            <form
+                class="auth-form"
+                id="signupForm"
+                onsubmit="signupUser(event)"
+            >
+
+                <div class="auth-field">
+
+                    <label>
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="signupEmail"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="auth-field">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="signupPassword"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="auth-field">
+
+                    <label>
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="signupConfirmPassword"
+                        placeholder="Confirm your password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                    id="signupSubmit"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <div
+                class="auth-message"
+                id="authMessage"
+            ></div>
+
+        </div>
+
+
+        <!-- LOGGED IN ACCOUNT -->
+        <div
+            class="account-panel"
+            id="accountPanel"
+        >
+
+            <div class="auth-logo">
+                AR
+            </div>
+
+            <h2 class="auth-title">
+                My Account
+            </h2>
+
+            <p class="auth-subtitle">
+                Welcome to A R Fashion 🌸
+            </p>
+
+            <div
+                class="account-email"
+                id="accountEmail"
+            >
+            </div>
+
+            <button
+                class="logout-btn"
+                onclick="logoutUser()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div>
+
+            <div class="footer-brand">
+                A R <span>Fashion</span>
+            </div>
+
+            <p>
+                Premium women's fashion, beautiful styles
+                and collections selected for you.
+            </p>
+
+            <div class="socials">
+
+                <a href="#" class="social">
+                    f
+                </a>
+
+                <a href="#" class="social">
+                    ◎
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div class="footer-title">
+                Quick Links
+            </div>
+
+            <div class="footer-links">
+
+                <a href="#home">
+                    Home
+                </a>
+
+                <a href="#shop">
+                    Shop
+                </a>
+
+                <a href="#new">
+                    New Arrivals
+                </a>
+
+                <a href="#featured">
+                    Featured
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div class="footer-title">
+                Contact
+            </div>
+
+            <div class="footer-links">
+
+                <a
+                    href="https://wa.me/94767088968"
+                    target="_blank"
+                >
+                    WhatsApp
+                </a>
+
+                <a href="#contact">
+                    Contact Us
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+        © 2026 A R Fashion. All rights reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+/* ============================================
+   SUPABASE
+============================================ */
+
+const SUPABASE_URL =
+    "https://kforwrhrjnsdxwyujinx.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_w0u5ia9qn7v_W2S2VNNsKQ_I8_YY8Z6";
+
+const { createClient } = supabase;
+
+const db = createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* ============================================
+   SETTINGS
+============================================ */
+
+const WHATSAPP_NUMBER =
+    "94767088968";
+
+let allProducts = [];
+
+let selectedCategory =
+    "All";
+
+let cart =
+    JSON.parse(
+        localStorage.getItem("arFashionCart")
+    ) || [];
+
+let currentUser =
+    null;
+
+
+/* ============================================
+   MENU
+============================================ */
+
+function toggleMenu(){
+
+    document
+        .getElementById("navLinks")
+        .classList.toggle("show");
+
+}
+
+function closeMenu(){
+
+    document
+        .getElementById("navLinks")
+        .classList.remove("show");
+
+}
+
+
+/* ============================================
+   CATEGORY
+============================================ */
+
+function setCategory(
+    category,
+    button
+){
+
+    selectedCategory =
+        category;
+
+    document
+        .querySelectorAll(".category")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    renderProducts();
+
+}
+
+
+/* ============================================
+   LOAD PRODUCTS
+============================================ */
+
+async function loadProducts(){
+
+    const grid =
+        document.getElementById(
+            "productsGrid"
+        );
+
+    grid.innerHTML = `
+        <div class="empty">
+            Loading products...
+        </div>
+    `;
+
+    const {
+        data,
+        error
+    } =
+        await db
+            .from("products")
+            .select("*")
+            .order(
+                "created_at",
+                {
+                    ascending:false
+                }
+            );
+
+    if(error){
+
+        console.error(error);
+
+        grid.innerHTML = `
+            <div class="empty">
+                Unable to load products.
+            </div>
+        `;
+
+        return;
+    }
+
+    allProducts =
+        data || [];
+
+    renderProducts();
+
+    renderNewProducts();
+
+    renderFeaturedProducts();
+
+}
+
+
+/* ============================================
+   FILTER PRODUCTS
+============================================ */
+
+function getFilteredProducts(){
+
+    const search =
+        document
+            .getElementById(
+                "searchInput"
+            )
+            .value
+            .toLowerCase()
+            .trim();
+
+    return allProducts.filter(
+        product => {
+
+            const matchesSearch =
+                String(
+                    product.name || ""
+                )
+                .toLowerCase()
+                .includes(search);
+
+            let matchesCategory =
+                true;
+
+            if(
+                selectedCategory ===
+                "New Arrivals"
+            ){
+
+                matchesCategory =
+                    product.new_arrival === true;
+
+            }
+            else if(
+                selectedCategory ===
+                "Featured"
+            ){
+
+                matchesCategory =
+                    product.featured === true;
+
+            }
+            else if(
+                selectedCategory !==
+                "All"
+            ){
+
+                matchesCategory =
+                    product.category ===
+                    selectedCategory;
+
+            }
+
+            return (
+                matchesSearch &&
+                matchesCategory
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================
+   PRODUCT CARD
+============================================ */
+
+function productCard(
+    product
+){
+
+    const image =
+        product.image_url
+            ? `
+                <img
+                    src="${escapeHtml(
+                        product.image_url
+                    )}"
+                    alt="${escapeHtml(
+                        product.name
+                    )}"
+                >
+            `
+            : `
+                <div class="product-placeholder">
+                    AR
+                </div>
+            `;
+
+    let badge = "";
+
+    if(
+        product.new_arrival
+    ){
+
+        badge =
+            `<div class="badge">NEW</div>`;
+
+    }
+    else if(
+        product.featured
+    ){
+
+        badge =
+            `<div class="badge">FEATURED</div>`;
+
+    }
+
+    return `
+        <div class="product">
+
+            <div class="product-image">
+
+                ${image}
+
+                ${badge}
+
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    ${escapeHtml(
+                        product.category ||
+                        "Women"
+                    )}
+                </div>
+
+                <div class="product-name">
+                    ${escapeHtml(
+                        product.name
+                    )}
+                </div>
+
+                <div class="product-bottom">
+
+                    <div class="product-price">
+                        Rs.
+                        ${Number(
+                            product.price || 0
+                        ).toFixed(2)}
+                    </div>
+
+                    <button
+                        class="add-btn"
+                        onclick="addToCart('${escapeHtml(
+                            product.id
+                        )}')"
+                    >
+                        + Cart
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+/* ============================================
+   RENDER SHOP
+============================================ */
+
+function renderProducts(){
+
+    const grid =
+        document.getElementById(
+            "productsGrid"
+        );
+
+    const products =
+        getFilteredProducts();
+
+    if(!products.length){
+
+        grid.innerHTML = `
+            <div class="empty">
+                No products found.
+            </div>
+        `;
+
+        return;
+    }
+
+    grid.innerHTML =
+        products
+            .map(productCard)
+            .join("");
+
+}
+
+
+/* ============================================
+   NEW PRODUCTS
+============================================ */
+
+function renderNewProducts(){
+
+    const container =
+        document.getElementById(
+            "newProducts"
+        );
+
+    const products =
+        allProducts
+            .filter(
+                product =>
+                    product.new_arrival
+            )
+            .slice(0,4);
+
+    if(!products.length){
+
+        container.innerHTML = `
+            <div class="empty">
+                New arrivals will appear here.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        products
+            .map(productCard)
+            .join("");
+
+}
+
+
+/* ============================================
+   FEATURED PRODUCTS
+============================================ */
+
+function renderFeaturedProducts(){
+
+    const container =
+        document.getElementById(
+            "featuredProducts"
+        );
+
+    const products =
+        allProducts
+            .filter(
+                product =>
+                    product.featured
+            )
+            .slice(0,4);
+
+    if(!products.length){
+
+        container.innerHTML = `
+            <div class="empty">
+                Featured products will appear here.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        products
+            .map(productCard)
+            .join("");
+
+}
+
+
+/* ============================================
+   CART
+============================================ */
+
+function addToCart(id){
+
+    const product =
+        allProducts.find(
+            item =>
+                item.id === id
+        );
+
+    if(!product) return;
+
+    const existing =
+        cart.find(
+            item =>
+                item.id === id
+        );
+
+    if(existing){
+
+        existing.quantity++;
+
+    }
+    else{
+
+        cart.push({
+
+            id:
+                product.id,
+
+            name:
+                product.name,
+
+            price:
+                Number(
+                    product.price || 0
+                ),
+
+            image_url:
+                product.image_url || "",
+
+            quantity:
+                1
+
+        });
+
+    }
+
+    saveCart();
+
+    updateCartCount();
+
+    openCart();
+
+}
+
+
+function saveCart(){
+
+    localStorage.setItem(
+        "arFashionCart",
+        JSON.stringify(cart)
+    );
+
+}
+
+
+function updateCartCount(){
+
+    const count =
+        cart.reduce(
+            (
+                sum,
+                item
+            ) =>
+                sum +
+                item.quantity,
+            0
+        );
+
+    document.getElementById(
+        "cartCount"
+    ).textContent =
+        count;
+
+}
+
+
+/* ============================================
+   CART DISPLAY
+============================================ */
+
+function openCart(){
+
+    document
+        .getElementById(
+            "cartOverlay"
+        )
+        .classList.add("show");
+
+    renderCart();
+
+}
+
+
+function closeCart(){
+
+    document
+        .getElementById(
+            "cartOverlay"
+        )
+        .classList.remove("show");
+
+}
+
+
+function closeCartOutside(event){
+
+    if(
+        event.target.id ===
+        "cartOverlay"
+    ){
+
+        closeCart();
+
+    }
+
+}
+
+
+function changeQuantity(
+    id,
+    amount
+){
+
+    const item =
+        cart.find(
+            product =>
+                product.id === id
+        );
+
+    if(!item) return;
+
+    item.quantity +=
+        amount;
+
+    if(
+        item.quantity <= 0
+    ){
+
+        cart =
+            cart.filter(
+                product =>
+                    product.id !== id
+            );
+
+    }
+
+    saveCart();
+
+    updateCartCount();
+
+    renderCart();
+
+}
+
+
+function renderCart(){
+
+    const container =
+        document.getElementById(
+            "cartItems"
+        );
+
+    if(!cart.length){
+
+        container.innerHTML = `
+            <div class="empty">
+                Your cart is empty.
+            </div>
+        `;
+
+        document.getElementById(
+            "cartTotal"
+        ).textContent =
+            "Rs. 0.00";
+
+        return;
+    }
+
+    container.innerHTML =
+        cart.map(
+            item => {
+
+                const image =
+                    item.image_url
+                        ? `
+                            <img
+                                src="${escapeHtml(
+                                    item.image_url
+                                )}"
+                                alt=""
+                            >
+                        `
+                        : `
+                            <div class="product-placeholder">
+                                AR
+                            </div>
+                        `;
+
+                return `
+                    <div class="cart-item">
+
+                        <div class="cart-img">
+                            ${image}
+                        </div>
+
+                        <div class="cart-details">
+
+                            <h4>
+                                ${escapeHtml(
+                                    item.name
+                                )}
+                            </h4>
+
+                            <p>
+                                Rs.
+                                ${item.price.toFixed(2)}
+                            </p>
+
+                            <div class="qty">
+
+                                <button
+                                    onclick="changeQuantity(
+                                        '${escapeHtml(
+                                            item.id
+                                        )}',
+                                        -1
+                                    )"
+                                >
+                                    −
+                                </button>
+
+                                <span>
+                                    ${item.quantity}
+                                </span>
+
+                                <button
+                                    onclick="changeQuantity(
+                                        '${escapeHtml(
+                                            item.id
+                                        )}',
+                                        1
+                                    )"
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        ).join("");
+
+
+    const total =
+        cart.reduce(
+            (
+                sum,
+                item
+            ) =>
+                sum +
+                item.price *
+                item.quantity,
+            0
+        );
+
+    document.getElementById(
+        "cartTotal"
+    ).textContent =
+        "Rs. " +
+        total.toFixed(2);
+
+}
+
+
+/* ============================================
+   WHATSAPP ORDER
+============================================ */
+
+function orderWhatsApp(){
+
+    if(!cart.length){
+
+        alert(
+            "Your cart is empty."
+        );
+
+        return;
+    }
+
+    let message =
+        "Hello A R Fashion! 🌸%0A%0A" +
+        "I would like to order:%0A%0A";
+
+    let total = 0;
+
+    cart.forEach(
+        (
+            item,
+            index
+        ) => {
+
+            const subtotal =
+                item.price *
+                item.quantity;
+
+            total +=
+                subtotal;
+
+            message +=
+                `${index + 1}. ${
+                    item.name
+                }%0A` +
+                `Qty: ${
+                    item.quantity
+                }%0A` +
+                `Price: Rs. ${
+                    item.price.toFixed(2)
+                }%0A` +
+                `Subtotal: Rs. ${
+                    subtotal.toFixed(2)
+                }%0A%0A`;
+
+        }
+    );
+
+    message +=
+        `Total: Rs. ${
+            total.toFixed(2)
+        }%0A%0A` +
+        "Please let me know how I can complete my order.";
+
+    const url =
+        `https://wa.me/${
+            WHATSAPP_NUMBER
+        }?text=${message}`;
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* ============================================
+   AUTH - OPEN ACCOUNT
+============================================ */
+
+function openAccount(){
+
+    updateAccountUI();
+
+    document
+        .getElementById(
+            "authOverlay"
+        )
+        .classList.add("show");
+
+}
+
+
+function closeAccount(){
+
+    document
+        .getElementById(
+            "authOverlay"
+        )
+        .classList.remove("show");
+
+    clearAuthMessage();
+
+}
+
+
+function closeAuthOutside(
+    event
+){
+
+    if(
+        event.target.id ===
+        "authOverlay"
+    ){
+
+        closeAccount();
+
+    }
+
+}
+
+
+/* ============================================
+   AUTH TABS
+============================================ */
+
+function showAuthForm(
+    form
+){
+
+    document
+        .getElementById(
+            "loginTab"
+        )
+        .classList.toggle(
+            "active",
+            form === "login"
+        );
+
+    document
+        .getElementById(
+            "signupTab"
+        )
+        .classList.toggle(
+            "active",
+            form === "signup"
+        );
+
+
+    document
+        .getElementById(
+            "loginForm"
+        )
+        .classList.toggle(
+            "active",
+            form === "login"
+        );
+
+    document
+        .getElementById(
+            "signupForm"
+        )
+        .classList.toggle(
+            "active",
+            form === "signup"
+        );
+
+
+    if(
+        form === "login"
+    ){
+
+        document.getElementById(
+            "authTitle"
+        ).textContent =
+            "Welcome Back";
+
+        document.getElementById(
+            "authSubtitle"
+        ).textContent =
+            "Login to your A R Fashion account.";
+
+    }
+    else{
+
+        document.getElementById(
+            "authTitle"
+        ).textContent =
+            "Create Account";
+
+        document.getElementById(
+            "authSubtitle"
+        ).textContent =
+            "Join A R Fashion and shop your favourite styles.";
+
+    }
+
+    clearAuthMessage();
+
+}
+
+
+/* ============================================
+   AUTH MESSAGE
+============================================ */
+
+function showAuthMessage(
+    message,
+    type = ""
+){
+
+    const box =
+        document.getElementById(
+            "authMessage"
+        );
+
+    box.textContent =
+        message;
+
+    box.className =
+        "auth-message " +
+        type;
+
+}
+
+
+function clearAuthMessage(){
+
+    const box =
+        document.getElementById(
+            "authMessage"
+        );
+
+    box.textContent =
+        "";
+
+    box.className =
+        "auth-message";
+
+}
+
+
+/* ============================================
+   SIGN UP
+============================================ */
+
+async function signupUser(
+    event
+){
+
+    event.preventDefault();
+
+    clearAuthMessage();
+
+    const email =
+        document.getElementById(
+            "signupEmail"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "signupPassword"
+        ).value;
+
+    const confirmPassword =
+        document.getElementById(
+            "signupConfirmPassword"
+        ).value;
+
+    const button =
+        document.getElementById(
+            "signupSubmit"
+        );
+
+
+    if(
+        password !==
+        confirmPassword
+    ){
+
+        showAuthMessage(
+            "Passwords do not match.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(
+        password.length < 6
+    ){
+
+        showAuthMessage(
+            "Password must be at least 6 characters.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Creating Account...";
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await db.auth.signUp({
+
+                email:
+                    email,
+
+                password:
+                    password
+
+            });
+
+
+        if(error)
+            throw error;
+
+
+        if(
+            data.session
+        ){
+
+            showAuthMessage(
+                "Account created successfully!",
+                "success"
+            );
+
+            setTimeout(
+                () => {
+
+                    closeAccount();
+
+                },
+                900
+            );
+
+        }
+        else{
+
+            showAuthMessage(
+                "Account created! Please check your email to confirm your account.",
+                "success"
+            );
+
+        }
+
+
+        document
+            .getElementById(
+                "signupForm"
+            )
+            .reset();
+
+    }
+    catch(error){
+
+        console.error(
+            "Signup error:",
+            error
+        );
+
+        showAuthMessage(
+            getAuthErrorMessage(
+                error
+            ),
+            "error"
+        );
+
+    }
+    finally{
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Create Account";
+
+    }
+
+}
+
+
+/* ============================================
+   LOGIN
+============================================ */
+
+async function loginUser(
+    event
+){
+
+    event.preventDefault();
+
+    clearAuthMessage();
+
+    const email =
+        document.getElementById(
+            "loginEmail"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "loginPassword"
+        ).value;
+
+    const button =
+        document.getElementById(
+            "loginSubmit"
+        );
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Logging in...";
+
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await db.auth.signInWithPassword({
+
+                email:
+                    email,
+
+                password:
+                    password
+
+            });
+
+
+        if(error)
+            throw error;
+
+
+        currentUser =
+            data.user;
+
+
+        showAuthMessage(
+            "Login successful!",
+            "success"
+        );
+
+
+        document
+            .getElementById(
+                "loginForm"
+            )
+            .reset();
+
+
+        setTimeout(
+            () => {
+
+                updateAccountUI();
+
+            },
+            500
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Login error:",
+            error
+        );
+
+        showAuthMessage(
+            getAuthErrorMessage(
+                error
+            ),
+            "error"
+        );
+
+    }
+    finally{
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Login";
+
+    }
+
+}
+
+
+/* ============================================
+   FORGOT PASSWORD
+============================================ */
+
+async function forgotPassword(){
+
+    const email =
+        document.getElementById(
+            "loginEmail"
+        ).value.trim();
+
+    if(!email){
+
+        showAuthMessage(
+            "Enter your email address first.",
+            "error"
+        );
+
+        document
+            .getElementById(
+                "loginEmail"
+            )
+            .focus();
+
+        return;
+    }
+
+
+    try{
+
+        const {
+            error
+        } =
+            await db.auth.resetPasswordForEmail(
+                email,
+                {
+                    redirectTo:
+                        window.location.origin +
+                        window.location.pathname
+                }
+            );
+
+
+        if(error)
+            throw error;
+
+
+        showAuthMessage(
+            "Password reset email sent. Please check your inbox.",
+            "success"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Password reset error:",
+            error
+        );
+
+        showAuthMessage(
+            getAuthErrorMessage(
+                error
+            ),
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================
+   LOGOUT
+============================================ */
+
+async function logoutUser(){
+
+    const {
+        error
+    } =
+        await db.auth.signOut();
+
+    if(error){
+
+        console.error(
+            error
+        );
+
+        return;
+    }
+
+    currentUser =
+        null;
+
+    updateAccountUI();
+
+    showAuthMessage(
+        "You have been logged out.",
+        "success"
+    );
+
+}
+
+
+/* ============================================
+   UPDATE ACCOUNT UI
+============================================ */
+
+function updateAccountUI(){
+
+    const authArea =
+        document.getElementById(
+            "authArea"
+        );
+
+    const accountPanel =
+        document.getElementById(
+            "accountPanel"
+        );
+
+    const accountButton =
+        document.getElementById(
+            "accountButton"
+        );
+
+    const accountEmail =
+        document.getElementById(
+            "accountEmail"
+        );
+
+
+    if(currentUser){
+
+        authArea.style.display =
+            "none";
+
+        accountPanel.classList.add(
+            "show"
+        );
+
+        accountEmail.textContent =
+            currentUser.email ||
+            "Logged in user";
+
+        accountButton.textContent =
+            "👤";
+
+        accountButton.classList.add(
+            "logged"
+        );
+
+    }
+    else{
+
+        authArea.style.display =
+            "block";
+
+        accountPanel.classList.remove(
+            "show"
+        );
+
+        accountButton.textContent =
+            "👤";
+
+        accountButton.classList.remove(
+            "logged"
+        );
+
+    }
+
+}
+
+
+/* ============================================
+   CHECK EXISTING SESSION
+============================================ */
+
+async function checkUserSession(){
+
+    const {
+        data,
+        error
+    } =
+        await db.auth.getSession();
+
+    if(error){
+
+        console.error(
+            "Session error:",
+            error
+        );
+
+        return;
+    }
+
+    currentUser =
+        data.session
+            ? data.session.user
+            : null;
+
+    updateAccountUI();
+
+
+    db.auth.onAuthStateChange(
+        (
+            event,
+            session
+        ) => {
+
+            currentUser =
+                session
+                    ? session.user
+                    : null;
+
+            updateAccountUI();
+
+        }
+    );
+
+}
+
+
+/* ============================================
+   AUTH ERROR MESSAGE
+============================================ */
+
+function getAuthErrorMessage(
+    error
+){
+
+    const message =
+        String(
+            error?.message || ""
+        ).toLowerCase();
+
+
+    if(
+        message.includes(
+            "invalid login credentials"
+        )
+    ){
+
+        return "Incorrect email or password.";
+
+    }
+
+
+    if(
+        message.includes(
+            "email not confirmed"
+        )
+    ){
+
+        return "Please confirm your email before logging in.";
+
+    }
+
+
+    if(
+        message.includes(
+            "user already registered"
+        )
+    ){
+
+        return "This email is already registered. Please login.";
+
+    }
+
+
+    if(
+        message.includes(
+            "password should be at least"
+        )
+    ){
+
+        return "Password must be at least 6 characters.";
+
+    }
+
+
+    if(
+        message.includes(
+            "rate limit"
+        )
+    ){
+
+        return "Too many attempts. Please try again later.";
+
+    }
+
+
+    return (
+        error?.message ||
+        "Something went wrong. Please try again."
+    );
+
+}
+
+
+/* ============================================
+   SECURITY / HTML ESCAPE
+============================================ */
+
+function escapeHtml(
+    value
+){
+
+    return String(
+        value || ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* ============================================
+   INITIALIZE
+============================================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        updateCartCount();
+
+        loadProducts();
+
+        checkUserSession();
+
+    }
+);
+
+</script>
+
+</body>
+</html>
